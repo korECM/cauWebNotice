@@ -91,7 +91,7 @@ async function cauNotice(page) {
   return Promise.resolve();
 }
 
-async function notice(page){
+async function notice(page) {
   while (true) {
     // 데인터 추출
     await page.waitFor(1000);
@@ -117,7 +117,7 @@ async function notice(page){
   return Promise.resolve();
 }
 
-async function schoolSchedule(page){
+async function schoolSchedule(page) {
   let scheduleNum = await page.evaluate(x => {
     return Promise.resolve(Array.from(
       document.querySelectorAll("#P014 > div > div > div > div > header:nth-child(2) > ol > li")
@@ -149,7 +149,7 @@ async function schoolSchedule(page){
   return Promise.resolve();
 }
 
-async function scrollToBottom(page){
+async function scrollToBottom(page) {
   await page.evaluate(() => {
     window.scrollTo(0, document.body.scrollHeight);
   });
@@ -157,59 +157,59 @@ async function scrollToBottom(page){
   return Promise.resolve();
 }
 
-async function library(page){
-    // 도서관 서울
-    await page.click(
-      "#P017 > div > div > div > div > header:nth-child(2) > div.nb-left > ol > li.ng-scope.on"
+async function library(page) {
+  // 도서관 서울
+  await page.click(
+    "#P017 > div > div > div > div > header:nth-child(2) > div.nb-left > ol > li.ng-scope.on"
+  );
+  await page.waitFor(500);
+  // 도서관 더보기 2번 클릭
+  await page.click(
+    "#P017 > div > div > div > div > ol > li > div.nb-p-02-list-more.ng-scope > a:nth-child(1)"
+  )
+  await page.click(
+    "#P017 > div > div > div > div > ol > li > div.nb-p-02-list-more.ng-scope > a:nth-child(1)"
+  )
+  const libSeoulData = await page.evaluate(() => {
+    const text = Array.from(
+      document.querySelectorAll(
+        "#P017 > div > div > div > div > ol > li > div.nb-padding-5-0 > div > div.nb-p-row > ul"
+      )
     );
-    await page.waitFor(500);
-    // 도서관 더보기 2번 클릭
-    await page.click(
-      "#P017 > div > div > div > div > ol > li > div.nb-p-02-list-more.ng-scope > a:nth-child(1)"
-    )
-    await page.click(
-      "#P017 > div > div > div > div > ol > li > div.nb-p-02-list-more.ng-scope > a:nth-child(1)"
-    )
-    const libSeoulData = await page.evaluate(() => {
-      const text = Array.from(
-        document.querySelectorAll(
-          "#P017 > div > div > div > div > ol > li > div.nb-padding-5-0 > div > div.nb-p-row > ul"
-        )
-      );
-      return text.map(data => data.textContent);
-    })
-    console.log(libSeoulData);
-  
-    await page.click(
-      "#P017 > div > div > div > div > header:nth-child(2) > div.nb-left > ol > li:nth-child(2)"
+    return text.map(data => data.textContent);
+  })
+  console.log(libSeoulData);
+
+  await page.click(
+    "#P017 > div > div > div > div > header:nth-child(2) > div.nb-left > ol > li:nth-child(2)"
+  );
+  await page.waitFor(500);
+  const libLawData = await page.evaluate(() => {
+    const text = Array.from(
+      document.querySelectorAll(
+        "#P017 > div > div > div > div > ol > li > div > div > div.nb-p-row > ul"
+      )
     );
-    await page.waitFor(500);
-    const libLawData = await page.evaluate(() => {
-      const text = Array.from(
-        document.querySelectorAll(
-          "#P017 > div > div > div > div > ol > li > div > div > div.nb-p-row > ul"
-        )
-      );
-      return text.map(data => data.textContent);
-    })
-    console.log(libLawData);
-  
-    await page.click(
-      "#P017 > div > div > div > div > header:nth-child(2) > div.nb-left > ol > li:nth-child(3)"
+    return text.map(data => data.textContent);
+  })
+  console.log(libLawData);
+
+  await page.click(
+    "#P017 > div > div > div > div > header:nth-child(2) > div.nb-left > ol > li:nth-child(3)"
+  );
+  await page.waitFor(500);
+  await page.click(
+    "#P017 > div > div > div > div > ol > li > div.nb-p-02-list-more.ng-scope > a:nth-child(1)"
+  );
+
+  const libAnSeongData = await page.evaluate(() => {
+    const text = Array.from(
+      document.querySelectorAll(
+        "#P017 > div > div > div > div > ol > li > div.nb-padding-5-0 > div > div.nb-p-row > ul"
+      )
     );
-    await page.waitFor(500);
-    await page.click(
-      "#P017 > div > div > div > div > ol > li > div.nb-p-02-list-more.ng-scope > a:nth-child(1)"
-    );
-  
-    const libAnSeongData = await page.evaluate(() => {
-      const text = Array.from(
-        document.querySelectorAll(
-          "#P017 > div > div > div > div > ol > li > div.nb-padding-5-0 > div > div.nb-p-row > ul"
-        )
-      );
-      return text.map(data => data.textContent);
-    })
-    console.log(libAnSeongData);
-    return Promise.resolve();
+    return text.map(data => data.textContent);
+  })
+  console.log(libAnSeongData);
+  return Promise.resolve();
 }
