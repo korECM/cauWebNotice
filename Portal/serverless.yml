@@ -7,13 +7,39 @@ provider:
   timeout: 30
   region: ap-northeast-2
 functions:
-  start:
-    handler: src/index.handler
+  all:
+    handler: src/index.all
     events:
       - http:
-          path: /start
+          path: /all
+          method: get
+  cauNotice:
+    handler: src/index.cauNotice
+    events:
+      - http:
+          path: /cauNotice
+          method: get
+  notice:
+    handler: src/index.notice
+    events:
+      - http:
+          path: /notice
+          method: get
+  schoolSchedule:
+    handler: src/index.schoolSchedule
+    events:
+      - http:
+          path: /schoolSchedule
+          method: get
+  library:
+    handler: src/index.library
+    events:
+      - http:
+          path: /library
           method: get
 package:
+  include:
+    - node_modules/puppeteer-core/**
   excludeDevDependencies: false
 plugins:
   - serverless-offline

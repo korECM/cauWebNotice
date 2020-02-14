@@ -1,9 +1,117 @@
-const puppeteer = require("puppeteer");
 const cau = require("../config").cau;
-
 const chromium = require("chrome-aws-lambda");
 
-module.exports.handler = async (event, context) => {
+module.exports.cauNotice = async (event, context) => {
+  const browser = await chromium.puppeteer.launch({
+    executablePath: await chromium.executablePath,
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    headless: /*chromium.headless*/ true
+  });
+
+  const page = await browser.newPage();
+
+  await page.setViewport({
+    width: 1920,
+    height: 1080
+  });
+
+  let data = {};
+
+  await login(page);
+  data.cauNotice = await cauNotice(page);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(data)
+  };
+};
+
+module.exports.notice = async (event, context) => {
+  const browser = await chromium.puppeteer.launch({
+    executablePath: await chromium.executablePath,
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    headless: /*chromium.headless*/ true
+  });
+
+  const page = await browser.newPage();
+
+  await page.setViewport({
+    width: 1920,
+    height: 1080
+  });
+
+  let data = {};
+
+  await login(page);
+  data.notice = await notice(page);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(data)
+  };
+};
+
+module.exports.schoolSchedule = async (event, context) => {
+  const browser = await chromium.puppeteer.launch({
+    executablePath: await chromium.executablePath,
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    headless: /*chromium.headless*/ true
+  });
+
+  const page = await browser.newPage();
+
+  await page.setViewport({
+    width: 1920,
+    height: 1080
+  });
+
+  let data = {};
+
+  await login(page);
+  data.schoolSchedule = await schoolSchedule(page);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(data)
+  };
+};
+
+module.exports.library = async (event, context) => {
+  const browser = await chromium.puppeteer.launch({
+    executablePath: await chromium.executablePath,
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    headless: /*chromium.headless*/ true
+  });
+
+  const page = await browser.newPage();
+
+  await page.setViewport({
+    width: 1920,
+    height: 1080
+  });
+
+  let data = {};
+
+  await login(page);
+  await page.waitForSelector(
+    "#P022 > div > div > div > div > header:nth-child(2) > div.nb-left > ol > li.ng-scope.on > span"
+  );
+  await page.waitFor(500);
+  await scrollToBottom(page);
+
+  data.library = await library(page);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(data)
+  };
+};
+
+module.exports.all = async (event, context) => {
   // const pageToScreenshot = JSON.parse(event.body).pageToScreenshot;
 
   const browser = await chromium.puppeteer.launch({
@@ -209,8 +317,8 @@ async function schoolSchedule(page, data) {
 
     const month = await page.$eval(
       "#P014 > div > div > div > div > header:nth-child(2) > ol > li:nth-child(" +
-        (index + 1) +
-        ") > span",
+      (index + 1) +
+      ") > span",
       d => {
         return d.textContent;
       }
