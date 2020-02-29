@@ -1,7 +1,6 @@
 {
   "name": "webnotice",
   "version": "1.0.0",
-  "description": "",
   "main": "portal.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,14 +10,26 @@
   "dependencies": {
     "@serverless-chrome/lambda": "^1.0.0-55",
     "aws-sdk": "^2.617.0",
+    "cheerio": "^1.0.0-rc.3",
     "chrome-aws-lambda": "^2.1.1",
     "chrome-launcher": "^0.12.0",
     "puppeteer-core": "^2.1.1",
+    "request": "^2.88.2",
     "serverless-plugin-chrome": "^1.0.0-55.3",
     "superagent": "^5.2.1",
     "url": "^0.11.0"
   },
   "devDependencies": {
     "puppeteer": "^2.1.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/korECM/cauWebNotice.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/korECM/cauWebNotice/issues"
+  },
+  "homepage": "https://github.com/korECM/cauWebNotice#readme",
+  "description": ""
 }

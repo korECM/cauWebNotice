@@ -21,6 +21,8 @@ module.exports.cauNotice = async (event, context) => {
   await login(page);
   data.cauNotice = await cauNotice(page);
 
+  await browser.close();
+
   return {
     statusCode: 200,
     body: JSON.stringify(data)
@@ -46,6 +48,8 @@ module.exports.notice = async (event, context) => {
 
   await login(page);
   data.notice = await notice(page);
+  console.log("닫기 전 ");
+  await browser.close();
 
   return {
     statusCode: 200,
@@ -72,6 +76,8 @@ module.exports.schoolSchedule = async (event, context) => {
 
   await login(page);
   data.schoolSchedule = await schoolSchedule(page);
+
+  await browser.close();
 
   return {
     statusCode: 200,
@@ -104,6 +110,8 @@ module.exports.library = async (event, context) => {
   await scrollToBottom(page);
 
   data.library = await library(page);
+
+  await browser.close();
 
   return {
     statusCode: 200,
@@ -166,6 +174,7 @@ async function login(page) {
   );
   //로그인 버튼을 클릭해라
   await page.click("#form1 > div > div > div.login-wrap > a");
+  // await page.waitFor(1500);
   return Promise.resolve();
 }
 
@@ -206,7 +215,7 @@ async function cauNotice(page) {
     titles = await page.evaluate(() => {
       const text = Array.from(
         document.querySelectorAll(
-          "#P021 > div > div > div > div > ol > li > div.nb-padding-5-0.nb-font-13 > div > div > a > em > span"
+          "#P021 > div > div > div > div > ol > li > div.nb-padding-5-0.nb-font-13 > div > div > a > em:nth-child(1)"
         )
       );
       return text.map(data => data.textContent);
@@ -240,7 +249,10 @@ async function cauNotice(page) {
       date: date
     });
   }
-
+  console.log(links.length);
+  console.log(titles.length);
+  console.log(dates.length);
+  // await page.waitFor(1000000);
   return Promise.resolve(data);
 }
 
@@ -248,6 +260,9 @@ async function notice(page) {
   let links;
   let titles;
   let dates;
+  await page.waitForSelector(
+    "#P004 > div > div > div > div > ol > li > div.nb-p-table.nb-padding-5-0.nb-font-13 > div > a"
+  );
   while (true) {
     // 데인터 추출
     await page.waitFor(1000);
@@ -258,7 +273,7 @@ async function notice(page) {
       }
     );
     titles = await page.$$eval(
-      "#P004 > div > div > div > div > ol > li > div.nb-padding-5-0.nb-font-13 > div > a > em > span",
+      "#P004 > div > div > div > div > ol > li > div.nb-padding-5-0.nb-font-13 > div > a > em:nth-child(1) > span",
       t => {
         return t.map(data => data.textContent);
       }
@@ -290,6 +305,9 @@ async function notice(page) {
 }
 
 async function schoolSchedule(page, data) {
+  await page.waitForSelector(
+    "#P014 > div > div > div > div > header:nth-child(2) > ol > li"
+  );
   let scheduleNum = await page.$$eval(
     "#P014 > div > div > div > div > header:nth-child(2) > ol > li",
     d => {
@@ -317,8 +335,8 @@ async function schoolSchedule(page, data) {
 
     const month = await page.$eval(
       "#P014 > div > div > div > div > header:nth-child(2) > ol > li:nth-child(" +
-      (index + 1) +
-      ") > span",
+        (index + 1) +
+        ") > span",
       d => {
         return d.textContent;
       }

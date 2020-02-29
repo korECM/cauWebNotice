@@ -1,0 +1,17 @@
+service: ictcau
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 1024
+  timeout: 30
+  region: ap-northeast-2
+functions:
+  ictCAU:
+    handler: src/index.notice
+    events:
+      - http:
+          path: /notice
+          method: get
+plugins:
+  - serverless-offline

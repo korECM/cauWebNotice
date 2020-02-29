@@ -39,7 +39,6 @@ functions:
           method: get
 package:
   include:
-    - node_modules/puppeteer-core/**
-  excludeDevDependencies: false
+    - node_modules/**
 plugins:
   - serverless-offline
