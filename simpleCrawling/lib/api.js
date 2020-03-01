@@ -33,13 +33,9 @@ function getArticleCrawling(params) {
         request(url, (err, response, html) => {
           if (err) {
             console.error(err);
-            callback(
-              null,
-              createResponse(200, {
-                error: "crawling error"
-              })
-            );
-            reject();
+            reject({
+              error: "crawling error"
+            });
           }
           let $ = cheerio.load(html);
           $(trSelector).each(function() {

@@ -112,26 +112,25 @@ const _save = (str, Type) => {
   });
 };
 
-const read = (Type, cb, select = "-_id title link date") => {
-  return new Promise((resolve, reject) => {
+const read = (Type, select = "-_id title link date") => {
+  return new Promise((resolveFunction, reject) => {
     connect()
-      .then(() =>
-        Type.find()
+      .then(() => {
+        console.log("DB Connected");
+        return Type.find()
           .select(select)
           .lean()
-          .exec()
-      )
+          .exec();
+      })
       .then(datas => {
         if (datas === "undefined" || datas.length === 0) {
           throw e;
         } else {
-          cb(null, createResponse(200, datas));
-          resolve(createResponse(200, datas));
+          resolveFunction(createResponse(200, datas));
         }
       })
       .catch(e => {
         reject(createResponse(500, { message: "DB 데이터 오류" }));
-        cb(null, createResponse(200, datas));
       });
   });
 };
