@@ -1,0 +1,23 @@
+service: simplecrawling
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 200
+  timeout: 20
+  region: ap-northeast-2
+functions:
+  ictCAU:
+    handler: src/ictCAU.notice
+    events:
+      - http:
+          path: /ictCAUNotice
+          method: get
+  nurse:
+    handler: src/nurse.notice
+    events:
+      - http:
+          path: /nurseNotice
+          method: get
+plugins:
+  - serverless-offline
