@@ -9,11 +9,17 @@ const connect = () => {
     .connect("mongodb://cau:cauisthebest@13.209.15.24:27017/cauDB", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
+      serverSelectionTimeoutMS: 3000,
+      reconnectTries: 5,
+      reconnectInterval: 500
     })
     .then(conn => {
       connection = conn;
       return connection;
+    })
+    .catch(error => {
+      throw error;
     });
 };
 
@@ -34,8 +40,9 @@ const _save = (str, Type) => {
       } else {
         reject(
           createResponse(500, {
-            message: "DB에 저장하려는 데이터가 이상합니다",
-            error
+            error: {
+              message: "DB에 저장하려는 데이터가 이상합니다"
+            }
           })
         );
         return;
@@ -43,8 +50,9 @@ const _save = (str, Type) => {
     } catch (error) {
       reject(
         createResponse(500, {
-          message: "DB에 저장하려는 데이터가 이상합니다",
-          error
+          error: {
+            message: "DB에 저장하려는 데이터가 이상합니다"
+          }
         })
       );
       return;
@@ -52,7 +60,9 @@ const _save = (str, Type) => {
     if (!data || typeof data !== "object" || data.length == 0) {
       reject(
         createResponse(500, {
-          message: "DB에 저장하려는 데이터가 이상합니다"
+          error: {
+            message: "DB에 저장하려는 데이터가 이상합니다"
+          }
         })
       );
       return;
@@ -64,7 +74,9 @@ const _save = (str, Type) => {
     ) {
       reject(
         createResponse(500, {
-          message: "DB에 저장하려는 데이터가 이상합니다"
+          error: {
+            message: "DB에 저장하려는 데이터가 이상합니다"
+          }
         })
       );
       return;
@@ -72,7 +84,9 @@ const _save = (str, Type) => {
     if (typeof Type["findOneAndUpdate"] !== "function") {
       reject(
         createResponse(500, {
-          message: "DB Type이 이상합니다"
+          error: {
+            message: "DB Type이 이상합니다"
+          }
         })
       );
       return;
@@ -99,7 +113,12 @@ const _save = (str, Type) => {
             .catch(e => {
               console.error("Update 실패", e);
               reject(
-                createResponse(500, { message: "DB Update 실패", error: e })
+                createResponse(500, {
+                  error: {
+                    message: "DB Update 실패"
+                  },
+                  error: e
+                })
               );
             });
         });
@@ -107,7 +126,7 @@ const _save = (str, Type) => {
       })
       .catch(e => {
         console.log("DB 접속 실패");
-        reject(createResponse(500, { message: "DB 접속 실패", error: e }));
+        reject(createResponse(500, { error: { message: "DB 접속 실패" } }));
       });
   });
 };
@@ -130,7 +149,9 @@ const read = (Type, select = "-_id title link date") => {
         }
       })
       .catch(e => {
-        reject(createResponse(500, { message: "DB 데이터 오류" }));
+        console.error("db 접속 오류 from read");
+        console.log(e);
+        reject(createResponse(500, { error: { message: "DB 접속 오류" } }));
       });
   });
 };

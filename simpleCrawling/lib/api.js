@@ -2,7 +2,7 @@ const request = require("request");
 const cheerio = require("cheerio");
 const createResponse = require("./utils");
 
-function getArticle(params, db, cb) {
+function getArticle(params, db) {
   return new Promise((resolve, reject) => {
     if (db === null) {
       db = data => {
@@ -14,12 +14,10 @@ function getArticle(params, db, cb) {
         return db(data);
       })
       .then(sendData => {
-        cb(null, sendData);
-        resolve();
+        resolve(sendData);
       })
       .catch(error => {
-        cb(error);
-        reject();
+        reject(error);
       });
   });
 }
