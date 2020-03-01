@@ -2,7 +2,29 @@ const request = require("request");
 const cheerio = require("cheerio");
 const createResponse = require("./utils");
 
-function getArticle(params, callback) {
+function getArticle(params, db, cb) {
+  return new Promise((resolve, reject) => {
+    if (db === null) {
+      db = data => {
+        return Promise.resolve(createResponse(200, data));
+      };
+    }
+    getArticleCrawling(params)
+      .then(data => {
+        return db(data);
+      })
+      .then(sendData => {
+        cb(null, sendData);
+        resolve();
+      })
+      .catch(error => {
+        cb(error);
+        reject();
+      });
+  });
+}
+
+function getArticleCrawling(params) {
   return new Promise((resolve, reject) => {
     let data = [];
     let jobs = params.map(logic => {
@@ -17,10 +39,6 @@ function getArticle(params, callback) {
                 error: "crawling error"
               })
             );
-            // callback(null, {
-            //   statusCode: 200,
-            //   body: JSON.stringify()
-            // });
             reject();
           }
           let $ = cheerio.load(html);
@@ -36,21 +54,7 @@ function getArticle(params, callback) {
       });
     });
     Promise.all(jobs).then(() => {
-      callback(
-        null,
-        createResponse(200, {
-          data: data,
-          error: null
-        })
-      );
-      // callback(null, {
-      //   statusCode: 200,
-      //   body: JSON.stringify({
-      //     data: data,
-      //     error: null
-      //   })
-      // });
-      resolve();
+      resolve({ data });
     });
   });
 }

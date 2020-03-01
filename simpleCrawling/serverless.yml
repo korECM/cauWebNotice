@@ -7,17 +7,23 @@ provider:
   timeout: 20
   region: ap-northeast-2
 functions:
-  ictCAU:
-    handler: src/ictCAU.notice
+  saveIctCAU:
+    handler: src/ictCAU.saveNotice
     events:
       - http:
-          path: /ictCAUNotice
+          path: /saveictCAUNotice
           method: get
-  nurse:
-    handler: src/nurse.notice
+  readIctCAU:
+    handler: src/ictCAU.readNotice
     events:
       - http:
-          path: /nurseNotice
+          path: /readictCAUNotice
+          method: get
+  saveNurse:
+    handler: src/nurse.saveNotice
+    events:
+      - http:
+          path: /saveNurseNotice
           method: get
 plugins:
   - serverless-offline
