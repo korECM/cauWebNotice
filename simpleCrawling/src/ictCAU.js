@@ -1,6 +1,8 @@
 const getArticle = require("../lib/api");
+const { save, read } = require("../lib/db");
+const IctCAU = require("../models/ictCAU");
 
-module.exports.notice = async (event, context, callback) => {
+module.exports.saveNotice = async (event, context, callback) => {
   return getArticle(
     [
       {
@@ -27,6 +29,12 @@ module.exports.notice = async (event, context, callback) => {
         }
       }
     ],
+    save(IctCAU),
     callback
   );
+};
+module.exports.readNotice = async (event, context, callback) => {
+  return read(IctCAU, callback);
+
+  read()
 };

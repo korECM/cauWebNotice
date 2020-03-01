@@ -1,6 +1,6 @@
 const getArticle = require("../lib/api");
 
-module.exports.notice = async (event, context, callback) => {
+module.exports.saveNotice = async (event, context, callback) => {
   return getArticle(
     [
       {
@@ -26,6 +26,7 @@ module.exports.notice = async (event, context, callback) => {
         }
       }
     ],
+    null,
     callback
   );
 };
