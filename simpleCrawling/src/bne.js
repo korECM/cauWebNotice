@@ -1,4 +1,6 @@
 const getArticle = require("../lib/api");
+const { save, read } = require("../lib/db");
+const Bne = require("../models/bne");
 
 module.exports.saveNotice = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -19,7 +21,7 @@ module.exports.saveNotice = async (event, context, callback) => {
             )
               .find(".subject > a")
               .prop("href")
-              .match(/\d+/)}`;
+              .match(/\d+/)}`.trim();
             const date = $(this)
               .find("td:nth-child(6)")
               .text();
@@ -31,8 +33,18 @@ module.exports.saveNotice = async (event, context, callback) => {
           }
         }
       ],
-      null
+      save(Bne)
     );
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+module.exports.readNotice = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  try {
+    response = await read(Bne);
     return response;
   } catch (error) {
     return error;

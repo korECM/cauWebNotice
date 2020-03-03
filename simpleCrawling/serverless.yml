@@ -31,5 +31,11 @@ functions:
       - http:
           path: /saveBneNotice
           method: get
+  readBne:
+    handler: src/bne.readNotice
+    events:
+      - http:
+          path: /readBneNotice
+          method: get
 plugins:
   - serverless-offline
