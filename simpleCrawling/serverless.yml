@@ -25,5 +25,11 @@ functions:
       - http:
           path: /saveNurseNotice
           method: get
+  saveBne:
+    handler: src/bne.saveNotice
+    events:
+      - http:
+          path: /saveBneNotice
+          method: get
 plugins:
   - serverless-offline
