@@ -143,7 +143,9 @@ const read = (Type, select = "-_id title link date") => {
       })
       .then(datas => {
         if (datas === "undefined" || datas.length === 0) {
-          throw e;
+          reject(
+            createResponse(500, { error: { message: "받아온 데이터가 없음" } })
+          );
         } else {
           resolveFunction(createResponse(200, datas));
         }
