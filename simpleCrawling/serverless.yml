@@ -56,6 +56,34 @@ functions:
           path: /readBneNotice
           method: get
           cors: true
+  saveCoe:
+    handler: src/coe.saveNotice
+    events:
+      - http:
+          path: /saveCoeNotice
+          method: get
+          cors: true
+  readCoe:
+    handler: src/coe.readNotice
+    events:
+      - http:
+          path: /readCoeNotice
+          method: get
+          cors: true
+  saveMed:
+    handler: src/med.saveNotice
+    events:
+      - http:
+          path: /saveMedNotice
+          method: get
+          cors: true
+  readMed:
+    handler: src/med.readNotice
+    events:
+      - http:
+          path: /readMedNotice
+          method: get
+          cors: true
 
 plugins:
   - serverless-offline
