@@ -32,10 +32,18 @@ function getArticleCrawling(params) {
           if (err) {
             console.error(err);
             reject({
-              error: "crawling error"
+              error: { message: "crawling error" }
             });
           }
           let $ = cheerio.load(html);
+          if ($(trSelector).length == 0) {
+            console.error("선택된 tr 요소가 없습니다");
+            reject({
+              error: {
+                message: "선택된 tr 요소가 없습니다"
+              }
+            });
+          }
           $(trSelector).each(function() {
             const temp = $(this);
             const transfer = () => {

@@ -42,5 +42,20 @@ functions:
           path: /getLibrary/{id}
           method: get
           cors: true
+  saveBne:
+    handler: src/bne.saveNotice
+    events:
+      - http:
+          path: /saveBneNotice
+          method: get
+          cors: true
+  readBne:
+    handler: src/bne.readNotice
+    events:
+      - http:
+          path: /readBneNotice
+          method: get
+          cors: true
+
 plugins:
   - serverless-offline
