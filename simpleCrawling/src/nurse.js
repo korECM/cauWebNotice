@@ -1,6 +1,9 @@
 const getArticle = require("../lib/api");
+const { save, read } = require("../lib/db");
+const Nurse = require("../models/nurse");
 
 module.exports.saveNotice = async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
   return getArticle(
     [
       {
@@ -26,7 +29,16 @@ module.exports.saveNotice = async (event, context, callback) => {
         }
       }
     ],
-    null,
-    callback
+    save(Nurse)
   );
+};
+
+module.exports.readNotice = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  try {
+    response = await read(Nurse);
+    return response;
+  } catch (error) {
+    return error;
+  }
 };

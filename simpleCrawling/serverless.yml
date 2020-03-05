@@ -11,31 +11,79 @@ functions:
     handler: src/ictCAU.saveNotice
     events:
       - http:
-          path: /saveictCAUNotice
+          path: /saveIctCAUNotice
           method: get
+          cors: true
   readIctCAU:
     handler: src/ictCAU.readNotice
     events:
       - http:
-          path: /readictCAUNotice
+          path: /readIctCAUNotice
           method: get
+          cors: true
   saveNurse:
     handler: src/nurse.saveNotice
     events:
       - http:
           path: /saveNurseNotice
           method: get
+          cors: true
+  readNurse:
+    handler: src/nurse.readNotice
+    events:
+      - http:
+          path: /readNurseNotice
+          method: get
+          cors: true
+  getLibrary:
+    handler: src/library.getLibrary
+    events:
+      - http:
+          path: /getLibrary/{id}
+          method: get
+          cors: true
   saveBne:
     handler: src/bne.saveNotice
     events:
       - http:
           path: /saveBneNotice
           method: get
+          cors: true
   readBne:
     handler: src/bne.readNotice
     events:
       - http:
           path: /readBneNotice
           method: get
+          cors: true
+  saveCoe:
+    handler: src/coe.saveNotice
+    events:
+      - http:
+          path: /saveCoeNotice
+          method: get
+          cors: true
+  readCoe:
+    handler: src/coe.readNotice
+    events:
+      - http:
+          path: /readCoeNotice
+          method: get
+          cors: true
+  saveMed:
+    handler: src/med.saveNotice
+    events:
+      - http:
+          path: /saveMedNotice
+          method: get
+          cors: true
+  readMed:
+    handler: src/med.readNotice
+    events:
+      - http:
+          path: /readMedNotice
+          method: get
+          cors: true
+
 plugins:
   - serverless-offline
