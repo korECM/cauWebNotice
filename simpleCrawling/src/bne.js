@@ -21,7 +21,7 @@ module.exports.saveNotice = async (event, context, callback) => {
             )
               .find(".subject > a")
               .prop("href")
-              .match(/\d+/)}`.trim();
+              .match(/\d+[^&]/)}`.trim();
             const date = $(this)
               .find("td:nth-child(6)")
               .text();
