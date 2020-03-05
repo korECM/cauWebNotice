@@ -42,6 +42,13 @@ functions:
           path: /getLibrary/{id}
           method: get
           cors: true
+  getSubway:
+    handler: src/subway.getSubway
+    events:
+      - http:
+          path: /getSubway/{id}
+          method: get
+          cors: true
   saveBne:
     handler: src/bne.saveNotice
     events:
