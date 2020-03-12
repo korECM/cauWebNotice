@@ -49,6 +49,13 @@ functions:
           path: /getSubway/{id}
           method: get
           cors: true
+  getSubwayFirstLast:
+    handler: src/subway.getSubwayFirstLast
+    events:
+      - http:
+          path: /getSubwayFirstLast/{id}
+          method: get
+          cors: true
   saveBne:
     handler: src/bne.saveNotice
     events:
