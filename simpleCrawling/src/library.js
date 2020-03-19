@@ -25,8 +25,18 @@ module.exports.getLibrary = async (event, context) => {
     try {
       request(options, function(error, response) {
         if (error) throw new Error(error);
-        console.log(response.body);
-        resolve(createResponse(200, response.body));
+        let obj = JSON.parse(response.body);
+        // 왜 줄이면 resource size는 줄어드는데 transfer는 늘어나는 걸까나
+        obj.gridData = obj.gridData.map(e => {
+          return {
+            rN: e.roomName,
+            tC: e.totalCnt,
+            uC: e.useCnt,
+            rC: e.remainCnt
+          };
+        });
+        console.log(obj.gridData);
+        resolve(createResponse(200, obj.gridData));
       });
     } catch (error) {
       resolve(
