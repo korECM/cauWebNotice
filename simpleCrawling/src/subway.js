@@ -26,7 +26,61 @@ module.exports.getSubwayFirstLast = async (event, context) => {
     try {
       request(url, function(error, response) {
         if (error) throw new Error(error);
-        resolve(createResponse(200, response.body));
+        let $ = cheerio.load(response.body);
+        let totalResult = [];
+        $(".time_table._fl_tab_content").each(function(index, element) {
+          let results = [[], [], [], []];
+          let flag = true;
+          $(this)
+            .find("tbody > tr")
+            .each(function(index, element) {
+              // 처음에 첫차 있으므로 true로 먼저 설정
+              if (
+                $(this)
+                  .find("th")
+                  .text().length > 0
+              ) {
+                flag = !flag;
+              }
+              let offset = 0;
+              if (flag) {
+                offset = 2;
+              } else {
+                offset = 0;
+              }
+              $(this)
+                .find("td")
+                .each(function(index, element) {
+                  if (index === 0) {
+                    $(this)
+                      .find("div > div")
+                      .each(function(index, element) {
+                        results[0 + offset].push(
+                          $(this)
+                            .text()
+                            .trim()
+                        );
+                      });
+                  } else {
+                    $(this)
+                      .find("div > div")
+                      .each(function(index, element) {
+                        results[1 + offset].push(
+                          $(this)
+                            .text()
+                            .trim()
+                        );
+                      });
+                  }
+                });
+            });
+          // results = results.filter(data => data.length > 0);
+          totalResult.push(results);
+        });
+        console.log(totalResult);
+        // resolve(totalResult);
+        // resolve(createResponse(200, response.body));
+        resolve(createResponse(200, totalResult));
       });
     } catch (error) {
       resolve(
@@ -72,8 +126,12 @@ module.exports.getSubway = async (event, context) => {
     try {
       request(options, function(error, response) {
         if (error) throw new Error(error);
-        console.log(response.body);
-        resolve(createResponse(200, response.body));
+        let obj = JSON.parse(response.body);
+        Object.keys(obj).forEach(element => {
+          if (typeof obj[element] === "string" && obj[element].length === 0)
+            delete obj[element];
+        });
+        resolve(createResponse(200, obj));
       });
     } catch (error) {
       resolve(
