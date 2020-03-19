@@ -158,6 +158,5 @@ const read = (Type, select = "-_id title link date") => {
   });
 };
 
-// module.exports = connect;
 module.exports.save = save;
 module.exports.read = read;
