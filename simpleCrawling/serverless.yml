@@ -119,6 +119,8 @@ functions:
           path: /readFoodNotice
           method: get
           cors: true
-
+custom:
+  contentCompression: 1024
 plugins:
   - serverless-offline
+  - serverless-api-compression
