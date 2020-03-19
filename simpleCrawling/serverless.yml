@@ -6,6 +6,8 @@ provider:
   memorySize: 200
   timeout: 20
   region: ap-northeast-2
+  apiGateway:
+    minimumCompressionSize: 512
 functions:
   saveIctCAU:
     handler: src/ictCAU.saveNotice
@@ -119,8 +121,5 @@ functions:
           path: /readFoodNotice
           method: get
           cors: true
-custom:
-  contentCompression: 1024
 plugins:
   - serverless-offline
-  - serverless-api-compression
