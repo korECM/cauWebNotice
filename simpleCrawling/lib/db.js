@@ -32,6 +32,7 @@ const save = Type => {
 const _save = (str, Type) => {
   return new Promise((resolve, reject) => {
     console.log("저장 시작");
+    console.log(str);
     try {
       if (typeof str === "string") {
         var { data } = JSON.parse(str);
@@ -70,6 +71,8 @@ const _save = (str, Type) => {
     if (
       !data[0].hasOwnProperty("title") ||
       !data[0].hasOwnProperty("link") ||
+      // !data[0].hasOwnProperty("priceinfo") ||
+      // !data[0].hasOwnProperty("menuinfo") ||
       !data[0].hasOwnProperty("date")
     ) {
       reject(

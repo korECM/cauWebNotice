@@ -105,6 +105,20 @@ functions:
           path: /readMedNotice
           method: get
           cors: true
+  saveFood:
+    handler: src/food.saveNotice
+    events:
+      - http:
+          path: /saveFoodNotice
+          method: get
+          cors: true
+  readFood:
+    handler: src/food.readNotice
+    events:
+      - http:
+          path: /readFoodNotice
+          method: get
+          cors: true
 
 plugins:
   - serverless-offline
