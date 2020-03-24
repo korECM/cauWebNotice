@@ -123,17 +123,25 @@ module.exports.getSubway = async (event, context) => {
     }
   };
   return new Promise((resolve, reject) => {
+    let temp;
     try {
       request(options, function(error, response) {
         if (error) throw new Error(error);
-        let obj = JSON.parse(response.body);
-        Object.keys(obj).forEach(element => {
-          if (typeof obj[element] === "string" && obj[element].length === 0)
-            delete obj[element];
-        });
-        resolve(createResponse(200, obj));
+        temp = response.body;
+        try {
+          let obj = JSON.parse(response.body);
+          Object.keys(obj).forEach(element => {
+            if (typeof obj[element] === "string" && obj[element].length === 0)
+              delete obj[element];
+          });
+          resolve(createResponse(200, obj));
+        } catch (error) {
+          throw new Error(response.body);
+        }
       });
     } catch (error) {
+      console.error(error);
+      console.error(temp);
       resolve(
         createResponse(500, {
           error: {
