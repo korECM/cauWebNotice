@@ -136,7 +136,14 @@ module.exports.getSubway = async (event, context) => {
           });
           resolve(createResponse(200, obj));
         } catch (error) {
-          throw new Error(response.body);
+          resolve(
+            createResponse(500, {
+              error: {
+                message: "정부 API 또 맛감"
+              }
+            })
+          );
+          // throw new Error(response.body);
         }
       });
     } catch (error) {
