@@ -107,6 +107,20 @@ functions:
           path: /readMedNotice
           method: get
           cors: true
+  saveScholarship:
+    handler: src/scholarship.saveNotice
+    events:
+      - http:
+          path: /saveScholarshipNotice
+          method: get
+          cors: true
+  readScholarship:
+    handler: src/scholarship.readNotice
+    events:
+      - http:
+          path: /readScholarshipNotice
+          method: get
+          cors: true
   saveFood:
     handler: src/food.saveNotice
     events:
