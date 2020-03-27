@@ -121,5 +121,12 @@ functions:
           path: /readFoodNotice
           method: get
           cors: true
+  getSchoolSchedule:
+    handler: src/schoolSchedule.getSchoolSchedule
+    events:
+      - http:
+          path: /getSchoolSchedule/{id}
+          method: get
+          cors: true
 plugins:
   - serverless-offline
