@@ -1,8 +1,11 @@
 const createResponse = require("../lib/utils");
 const request = require("request");
 const cheerio = require("cheerio");
+const { defaultSave, read } = require("../lib/db");
+const SubwayFirstLast = require("../models/subwayFirstLast");
 
-module.exports.getSubwayFirstLast = async (event, context) => {
+module.exports.saveSubwayFirstLast = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
   let url = "";
   try {
     var line = event.pathParameters.id;
@@ -74,13 +77,19 @@ module.exports.getSubwayFirstLast = async (event, context) => {
                   }
                 });
             });
-          // results = results.filter(data => data.length > 0);
           totalResult.push(results);
         });
         console.log(totalResult);
-        // resolve(totalResult);
-        // resolve(createResponse(200, response.body));
-        resolve(createResponse(200, totalResult));
+        defaultSave(
+          [{ number: parseInt(line), data: JSON.stringify(totalResult) }],
+          SubwayFirstLast,
+          data => {
+            return { number: data.number };
+          }
+        ).then(message => {
+          resolve(message);
+        });
+        // resolve(createResponse(200, totalResult));
       });
     } catch (error) {
       resolve(
@@ -93,6 +102,30 @@ module.exports.getSubwayFirstLast = async (event, context) => {
       );
     }
   });
+};
+
+module.exports.readSubwayFirstLast = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+  try {
+    let lineId = event.pathParameters.id;
+    console.log(typeof lineId);
+    let lineNum = -1;
+    try {
+      lineNum = parseInt(lineId);
+    } catch (error) {
+      return { error: "Invalid Id" };
+    }
+    if (lineNum === -1) {
+      return { error: "Invalid Id" };
+    }
+    console.log(lineNum);
+    let response = await read(SubwayFirstLast, "-_id data", false, {
+      number: lineNum
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
 module.exports.getSubway = async (event, context) => {

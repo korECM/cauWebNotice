@@ -51,11 +51,18 @@ functions:
           path: /getSubway/{id}
           method: get
           cors: true
-  getSubwayFirstLast:
-    handler: src/subway.getSubwayFirstLast
+  saveSubwayFirstLast:
+    handler: src/subway.saveSubwayFirstLast
     events:
       - http:
-          path: /getSubwayFirstLast/{id}
+          path: /saveSubwayFirstLast/{id}
+          method: get
+          cors: true
+  readSubwayFirstLast:
+    handler: src/subway.readSubwayFirstLast
+    events:
+      - http:
+          path: /readSubwayFirstLast/{id}
           method: get
           cors: true
   getBus:

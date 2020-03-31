@@ -23,6 +23,48 @@ const connect = () => {
     });
 };
 
+const defaultSave = (data, Type, updateObject) => {
+  return new Promise((resolve, reject) => {
+    connect()
+      .then(() => {
+        console.log("Connected to DB");
+        data.map(objectData => {
+          Type.findOneAndUpdate(updateObject(objectData), objectData, {
+            new: true
+          })
+            .exec()
+            .then(data => {
+              console.log(data);
+              if (!data) {
+                const model = new Type(objectData);
+                model.save().then(() => {
+                  resolve(createResponse(200, { message: "Success" }));
+                });
+              }
+              console.log(data);
+              resolve(createResponse(200, { message: "Success" }));
+            })
+            .catch(e => {
+              console.error("Update 실패", e);
+              reject(
+                createResponse(500, {
+                  error: {
+                    message: "DB Update 실패"
+                  },
+                  error: e
+                })
+              );
+            });
+        });
+      })
+      .catch(e => {
+        console.log(e);
+        console.log("DB 접속 실패");
+        reject(createResponse(500, { error: { message: "DB 접속 실패" } }));
+      });
+  });
+};
+
 const save = Type => {
   return str => {
     return _save(str, Type);
@@ -134,12 +176,17 @@ const _save = (str, Type) => {
   });
 };
 
-const read = (Type, select = "-_id title link date") => {
+const read = (
+  Type,
+  select = "-_id title link date",
+  toArray = true,
+  findObject = null
+) => {
   return new Promise((resolveFunction, reject) => {
     connect()
       .then(() => {
         console.log("DB Connected");
-        return Type.find()
+        return Type.find(findObject)
           .select(select)
           .lean()
           .exec();
@@ -150,7 +197,7 @@ const read = (Type, select = "-_id title link date") => {
             createResponse(500, { error: { message: "받아온 데이터가 없음" } })
           );
         } else {
-          resolveFunction(createResponse(200, datas));
+          resolveFunction(createResponse(200, toArray ? datas : datas[0]));
         }
       })
       .catch(e => {
@@ -163,3 +210,4 @@ const read = (Type, select = "-_id title link date") => {
 
 module.exports.save = save;
 module.exports.read = read;
+module.exports.defaultSave = defaultSave;
