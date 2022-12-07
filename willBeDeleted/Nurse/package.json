@@ -13,7 +13,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "serverless": "^1.65.0",
+    "serverless": "^3.25.1",
     "serverless-offline": "^5.12.1"
   }
 }
